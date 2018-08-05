@@ -53,4 +53,12 @@ attr_accessor :name, :funds
     return films.map { |film| Film.new(film)  }
   end
 
+  def decrease_funds()
+    sql = "SELECT SUM(films.price) FROM films
+    INNER JOIN tickets ON films.id = tickets.film_id
+    WHERE tickets.customer_id = $1"
+    values = [@id]
+    result = SqlRunner.run(sql, values).first
+    return @funds - result['sum'].to_i()
+  end
 end
