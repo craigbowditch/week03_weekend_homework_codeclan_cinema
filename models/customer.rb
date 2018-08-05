@@ -61,4 +61,11 @@ attr_accessor :name, :funds
     result = SqlRunner.run(sql, values).first
     return @funds - result['sum'].to_i()
   end
+
+  def ticket_count()
+    sql = "SELECT * FROM tickets WHERE customer_id = $1"
+    values = [@id]
+    results = SqlRunner.run(sql, values)
+    return results.count
+  end
 end

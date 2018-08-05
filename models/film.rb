@@ -53,4 +53,11 @@ attr_accessor :title, :price
     return customers.map { |customer| Customer.new(customer)  }
   end
 
+  def customer_count()
+    sql = "SELECT * FROM tickets WHERE film_id = $1"
+    values = [@id]
+    results = SqlRunner.run(sql, values)
+    return results.count
+  end
+
 end
