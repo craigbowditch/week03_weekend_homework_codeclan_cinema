@@ -52,17 +52,13 @@ attr_accessor :name, :funds
     films = SqlRunner.run(sql, values)
     return films.map { |film| Film.new(film)  }
   end
-#It's returning what I want but unsure how to get this UPDATED in the database
-  def decrease_funds()
-    sql = "SELECT SUM(films.price) FROM films
-    INNER JOIN tickets ON films.id = tickets.film_id
-    WHERE tickets.customer_id = $1"
-    values = [@id]
-    result = SqlRunner.run(sql, values).first
-    amount = result['sum'].to_i()
-    @funds -= amount
-    self.update()
-  end
+
+  def buy_ticket(film)
+    @funds -= film.price
+    ticket = Ticket.new({'customer_id' => @id, 'film_id' => film.id})
+      ticket.save()
+      update()
+    end
 
   def ticket_count()
     sql = "SELECT * FROM tickets WHERE customer_id = $1"

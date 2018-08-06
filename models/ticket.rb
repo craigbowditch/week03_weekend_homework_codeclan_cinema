@@ -22,6 +22,20 @@ class Ticket
     @id = results['id'].to_i()
   end
 
+  def film()
+    sql = "SELECT * FROM films WHERE id = $1"
+    values = [@film_id]
+    result = SqlRunner.run(sql, values)
+    Film.new(result[0])
+  end
+
+  def customer()
+    sql = "SELECT * FROM customers Where id = $1"
+    values = [@customer_id]
+    result = SqlRunner.run(sql, values)
+    Customer.new(result[0])
+  end
+  
   def self.all()
     sql = "SELECT * FROM tickets"
     tickets = SqlRunner.run(sql)
@@ -39,5 +53,4 @@ class Ticket
     values = [@id]
     results = SqlRunner.run(sql,values)
   end
-
 end
